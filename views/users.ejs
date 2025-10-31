@@ -1,0 +1,34 @@
+<div class="container">
+  <div class="page-header">
+    <h2>Citizens Management</h2>
+  </div>
+
+  <div class="filter-section">
+    <div>
+      <label>Search Citizen</label>
+      <input type="text" id="userSearchBox" placeholder="Name or Email...">
+    </div>
+  </div>
+
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Citizen Name</th>
+        <th>Email</th>
+        <th>Phone</th>
+        <th>Total Complaints</th>
+        <th>Last Complaint Date</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody id="usersTableBody">
+      <tr>
+        <td colspan="6" class="text-center">Loading citizens...</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div id="userPagination"></div>
+</div>
+
+<script src="/js/users.js"></script>
