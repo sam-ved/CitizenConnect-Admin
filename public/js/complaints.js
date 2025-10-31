@@ -306,14 +306,40 @@ function closeEditModal() {
 
 async function saveComplaintChanges(id) {
   try {
+    const title = document.getElementById('editTitle').value.trim();
+    const description = document.getElementById('editDescription').value.trim();
+    const email = document.getElementById('editCitizenEmail').value.trim();
+    const phone = document.getElementById('editCitizenPhone').value.trim();
+
+    // Validation
+    if (!title || title.length < 1 || title.length > 200) {
+      showNotification('Title must be between 1-200 characters', 'error');
+      return;
+    }
+
+    if (!description || description.length < 10) {
+      showNotification('Description must be at least 10 characters', 'error');
+      return;
+    }
+
+    if (!validateEmail(email)) {
+      showNotification('Please enter a valid email address', 'error');
+      return;
+    }
+
+    if (!validatePhone(phone)) {
+      showNotification('Please enter a valid 10-digit phone number', 'error');
+      return;
+    }
+
     const updateData = {
-      title: document.getElementById('editTitle').value,
-      description: document.getElementById('editDescription').value,
+      title,
+      description,
       department_id: document.getElementById('editDepartment').value,
       status: document.getElementById('editStatus').value,
-      citizen_name: document.getElementById('editCitizenName').value,
-      citizen_email: document.getElementById('editCitizenEmail').value,
-      citizen_phone: document.getElementById('editCitizenPhone').value,
+      citizen_name: document.getElementById('editCitizenName').value.trim(),
+      citizen_email: email,
+      citizen_phone: phone,
     };
 
     await apiCall(`/api/complaints/${id}`, 'PUT', updateData);
