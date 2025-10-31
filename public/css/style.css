@@ -506,6 +506,20 @@ body {
   color: var(--primary-color);
 }
 
+/* Chart Tooltip */
+.chart-tooltip {
+  position: fixed;
+  background-color: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 0.5rem 0.8rem;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  pointer-events: none;
+  z-index: 2500;
+  display: none;
+  white-space: nowrap;
+}
+
 /* Notifications */
 .notification {
   position: fixed;
