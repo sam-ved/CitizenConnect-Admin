@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= title || 'CitizenConnect Admin' %></title>
+  <link rel="stylesheet" href="/css/style.css">
+  <script src="https://www.gstatic.com/charts/loader.js"></script>
+</head>
+<body>
+  <div class="header">
+    <h1>CitizenConnect Admin</h1>
+    <button class="logout-btn" onclick="logout()">Logout</button>
+  </div>
+
+  <div class="sidebar">
+    <nav>
+      <ul>
+        <li><a href="/dashboard" class="<%= currentPage === 'dashboard' ? 'active' : '' %>">Dashboard</a></li>
+        <li><a href="/complaints" class="<%= currentPage === 'complaints' ? 'active' : '' %>">Complaints</a></li>
+        <li><a href="/users" class="<%= currentPage === 'users' ? 'active' : '' %>">Citizens</a></li>
+        <li><a href="/departments" class="<%= currentPage === 'departments' ? 'active' : '' %>">Departments</a></li>
+      </ul>
+    </nav>
+  </div>
+
+  <div class="main-content">
+    <%-include(page) %>
+  </div>
+
+  <script src="/js/utils.js"></script>
+  <script>
+    function logout() {
+      if (confirm('Are you sure you want to logout?')) {
+        clearToken();
+        window.location.href = '/login';
+      }
+    }
+
+    // Ensure user is authenticated
+    redirectToLoginIfNeeded();
+
+    // Set active menu item
+    document.querySelectorAll('.sidebar a').forEach(link => {
+      link.classList.remove('active');
+    });
+    const currentPageLink = document.querySelector(
+      '.sidebar a[href="<%= '/' + currentPage %>"]'
+    );
+    if (currentPageLink) {
+      currentPageLink.classList.add('active');
+    }
+  </script>
+</body>
+</html>
