@@ -40,19 +40,19 @@ app.get('/', (req, res) => {
 });
 
 app.get('/dashboard', authMiddleware, (req, res) => {
-  res.render('dashboard');
+  res.render('layout', { page: 'dashboard', currentPage: 'dashboard' });
 });
 
 app.get('/complaints', authMiddleware, (req, res) => {
-  res.render('complaints');
+  res.render('layout', { page: 'complaints', currentPage: 'complaints' });
 });
 
 app.get('/users', authMiddleware, (req, res) => {
-  res.render('users');
+  res.render('layout', { page: 'users', currentPage: 'users' });
 });
 
 app.get('/departments', authMiddleware, (req, res) => {
-  res.render('departments');
+  res.render('layout', { page: 'departments', currentPage: 'departments' });
 });
 
 // 404 handler
