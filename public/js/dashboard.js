@@ -64,73 +64,56 @@ function renderStatisticsCards(data) {
 }
 
 function renderCharts(data) {
-  // Check if Google Charts is loaded
-  if (typeof google === 'undefined') {
-    console.warn('Google Charts not loaded, trying again in 500ms');
-    setTimeout(() => renderCharts(data), 500);
+  // Prepare data for custom charts
+  const chartData = data.departments_data.map((dept) => ({
+    label: dept.department_name,
+    value: parseInt(dept.complaint_count),
+  }));
+
+  if (chartData.length === 0) {
+    const pieContainer = document.getElementById('pieChart');
+    const barContainer = document.getElementById('barChart');
+    if (pieContainer)
+      pieContainer.innerHTML = '<p style="text-align: center; padding: 2rem;">No data available</p>';
+    if (barContainer)
+      barContainer.innerHTML = '<p style="text-align: center; padding: 2rem;">No data available</p>';
     return;
   }
 
-  google.charts.load('current', { packages: ['corechart'] });
-  google.charts.setOnLoadCallback(() => {
-    drawPieChart(data.departments_data);
-    drawBarChart(data.departments_data);
-  });
+  // Draw custom charts
+  drawPieChart(chartData);
+  drawBarChart(chartData);
 }
 
-function drawPieChart(departmentsData) {
+function drawPieChart(chartData) {
   const container = document.getElementById('pieChart');
   if (!container) return;
 
-  const chartData = [['Department', 'Complaints']];
-  departmentsData.forEach((dept) => {
-    chartData.push([dept.department_name, parseInt(dept.complaint_count)]);
-  });
+  // Create canvas element
+  container.innerHTML =
+    '<canvas id="pieChartCanvas" style="width: 100%; height: 100%;"></canvas>';
 
-  const data = google.visualization.arrayToDataTable(chartData);
-  const options = {
+  // Create and render pie chart
+  new PieChart('pieChartCanvas', chartData, {
     title: 'Complaints Distribution by Department',
-    pieHole: 0.4,
-    colors: ['#FF6B6B', '#4ECDC4', '#45B7D1', '#FFA07A'],
-    chartArea: { width: '90%', height: '90%' },
-  };
-
-  const chart = new google.visualization.PieChart(container);
-  chart.draw(data, options);
-
-  window.addEventListener('resize', () => {
-    chart.draw(data, options);
+    colors: ['#FF6B6B', '#4ECDC4', '#45B7D1', '#FFA07A', '#98D8C8', '#F7DC6F', '#BB8FCE', '#85C1E2'],
+    padding: 50,
   });
 }
 
-function drawBarChart(departmentsData) {
+function drawBarChart(chartData) {
   const container = document.getElementById('barChart');
   if (!container) return;
 
-  const chartData = [['Department', 'Count']];
-  departmentsData.forEach((dept) => {
-    chartData.push([dept.department_name, parseInt(dept.complaint_count)]);
-  });
+  // Create canvas element
+  container.innerHTML =
+    '<canvas id="barChartCanvas" style="width: 100%; height: 100%;"></canvas>';
 
-  const data = google.visualization.arrayToDataTable(chartData);
-  const options = {
+  // Create and render bar chart
+  new BarChart('barChartCanvas', chartData, {
     title: 'Complaints Count per Department',
-    legend: { position: 'none' },
-    colors: ['#4285F4'],
-    hAxis: {
-      title: 'Department',
-    },
-    vAxis: {
-      title: 'Number of Complaints',
-    },
-    chartArea: { width: '90%', height: '70%' },
-  };
-
-  const chart = new google.visualization.BarChart(container);
-  chart.draw(data, options);
-
-  window.addEventListener('resize', () => {
-    chart.draw(data, options);
+    color: '#4285F4',
+    padding: 60,
   });
 }
 
