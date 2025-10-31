@@ -5,7 +5,6 @@ const authMiddleware = require('../middleware/auth');
 const router = express.Router();
 
 router.post('/', complaintController.create);
-router.get('/stats', authMiddleware, complaintController.getStats);
 router.get('/:id', authMiddleware, complaintController.getById);
 router.get('/', authMiddleware, complaintController.getAll);
 router.put('/:id', authMiddleware, complaintController.update);
